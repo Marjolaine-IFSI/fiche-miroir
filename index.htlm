@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiche miroir étudiant — Guidance pédagogique</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sauge:#6B8E6C;
+    --terracotta:#BC6449;
+    --sable:#B69E78;
+    --bleu:#5A82AA;
+    --encre:#3A3F3B;
+    --papier:#FBFAF7;
+    --carte:#FFFFFF;
+    --ligne:#E5E0D6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:Calibri,'Segoe UI',-apple-system,sans-serif;
+    background:var(--papier);
+    color:var(--encre);
+    font-size:17px;
+    line-height:1.5;
+  }
+  h1,h2,legend{font-family:'Poppins',sans-serif;}
+
+  .conteneur{max-width:640px;margin:0 auto;padding:0 16px 40px;}
+
+  /* ===== En-tête ===== */
+  header{
+    background:var(--sauge);
+    color:#fff;
+    padding:28px 16px 22px;
+    text-align:center;
+  }
+  header .eyebrow{
+    font-family:'Poppins',sans-serif;
+    font-size:12px;letter-spacing:2.5px;text-transform:uppercase;
+    opacity:.85;margin-bottom:8px;
+  }
+  header h1{font-size:26px;font-weight:700;line-height:1.2;}
+  header p{margin-top:10px;font-size:15px;opacity:.95;max-width:480px;margin-left:auto;margin-right:auto;}
+
+  /* ===== Barre de progression ===== */
+  .progression{
+    position:sticky;top:0;z-index:10;
+    background:var(--papier);
+    padding:10px 16px 8px;
+    border-bottom:1px solid var(--ligne);
+  }
+  .progression .piste{
+    height:8px;background:var(--ligne);border-radius:4px;overflow:hidden;
+    max-width:640px;margin:0 auto;
+  }
+  .progression .remplissage{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--sauge),var(--bleu));
+    border-radius:4px;transition:width .3s ease;
+  }
+  .progression .texte{
+    max-width:640px;margin:4px auto 0;
+    font-size:12px;color:#7A7F7A;text-align:right;
+  }
+
+  /* ===== Intercalaires (sections) ===== */
+  fieldset{
+    border:none;
+    background:var(--carte);
+    border:1px solid var(--ligne);
+    border-radius:12px;
+    margin-top:34px;
+    padding:22px 18px 20px;
+    position:relative;
+  }
+  fieldset legend{
+    position:absolute;top:-16px;left:14px;
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:8px 8px 8px 0;
+    font-size:14px;font-weight:600;color:#fff;
+    letter-spacing:.3px;
+  }
+  fieldset legend::after{
+    content:"";position:absolute;left:0;bottom:-7px;
+    border-style:solid;border-width:7px 8px 0 0;
+    border-color:rgba(0,0,0,.28) transparent transparent transparent;
+  }
+  fieldset[data-onglet="sauge"]{border-top:4px solid var(--sauge);}
+  fieldset[data-onglet="sauge"] legend{background:var(--sauge);}
+  fieldset[data-onglet="bleu"]{border-top:4px solid var(--bleu);}
+  fieldset[data-onglet="bleu"] legend{background:var(--bleu);}
+  fieldset[data-onglet="terracotta"]{border-top:4px solid var(--terracotta);}
+  fieldset[data-onglet="terracotta"] legend{background:var(--terracotta);}
+  fieldset[data-onglet="sable"]{border-top:4px solid var(--sable);}
+  fieldset[data-onglet="sable"] legend{background:var(--sable);}
+
+  .champ{margin-top:18px;}
+  .champ:first-of-type{margin-top:8px;}
+  label.etiquette, .etiquette{
+    display:block;font-weight:700;font-size:15.5px;margin-bottom:7px;
+  }
+  .etiquette .facultatif{font-weight:400;color:#8B8F8B;font-size:13px;}
+  .aide{font-size:13.5px;color:#71766F;margin:-3px 0 8px;}
+
+  input[type=text],input[type=number],input[type=email],input[type=tel],textarea{
+    width:100%;padding:12px 13px;
+    border:1.5px solid var(--ligne);border-radius:9px;
+    font-family:inherit;font-size:16px;color:var(--encre);
+    background:#FDFDFB;
+  }
+  input:focus,textarea:focus{outline:2px solid var(--bleu);outline-offset:1px;border-color:var(--bleu);}
+  textarea{min-height:92px;resize:vertical;}
+
+  .deux-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:420px){.deux-col{grid-template-columns:1fr;}}
+
+  /* ===== Pastilles radio / checkbox ===== */
+  .pastilles{display:flex;flex-wrap:wrap;gap:9px;}
+  .pastilles label{
+    position:relative;cursor:pointer;
+  }
+  .pastilles input{
+    position:absolute;opacity:0;width:1px;height:1px;
+  }
+  .pastilles span{
+    display:inline-block;
+    padding:10px 16px;
+    border:1.5px solid var(--ligne);
+    border-radius:24px;
+    background:#FDFDFB;
+    font-size:15.5px;
+    transition:all .15s ease;
+    user-select:none;
+  }
+  .pastilles input:checked + span{
+    background:var(--sauge);border-color:var(--sauge);color:#fff;font-weight:600;
+  }
+  fieldset[data-onglet="bleu"] .pastilles input:checked + span{background:var(--bleu);border-color:var(--bleu);}
+  fieldset[data-onglet="terracotta"] .pastilles input:checked + span{background:var(--terracotta);border-color:var(--terracotta);}
+  fieldset[data-onglet="sable"] .pastilles input:checked + span{background:#9A8560;border-color:#9A8560;}
+  .pastilles input:focus-visible + span{outline:2px solid var(--bleu);outline-offset:2px;}
+
+  /* ===== Bloc consentement ===== */
+  .consentement{
+    margin-top:26px;
+    background:#FBF6EC;
+    border:1.5px solid var(--sable);
+    border-radius:12px;
+    padding:18px 16px;
+    font-size:14.5px;
+  }
+  .consentement h2{font-size:15px;color:#7d6a45;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+  .consentement ul{margin:8px 0 12px 18px;}
+  .consentement li{margin-top:4px;}
+  .consentement .case{
+    display:flex;gap:10px;align-items:flex-start;
+    font-weight:700;margin-top:10px;cursor:pointer;
+  }
+  .consentement input[type=checkbox]{width:22px;height:22px;accent-color:var(--sauge);flex-shrink:0;margin-top:1px;}
+
+  .etat-verrou{
+    margin-top:12px;
+    border-radius:9px;
+    padding:10px 13px;
+    font-size:14px;font-weight:600;
+    display:flex;align-items:center;gap:8px;
+  }
+  .etat-verrou.ferme{background:#F3E4DE;color:#8f4530;border:1px solid var(--terracotta);}
+  .etat-verrou.ouvert{background:#E9F0E9;color:#3f5c40;border:1px solid var(--sauge);}
+
+  .confidentiel{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12.5px;font-weight:600;color:#7d6a45;
+    background:#F3EBDB;border-radius:6px;padding:4px 10px;margin-bottom:10px;
+  }
+
+  /* ===== Verrouillage du formulaire ===== */
+  #corps-formulaire{transition:opacity .3s ease;}
+  #corps-formulaire.verrouille{
+    opacity:.4;
+    pointer-events:none;
+    filter:grayscale(.4);
+  }
+
+  /* ===== Bouton d'envoi ===== */
+  .envoi{margin-top:32px;text-align:center;}
+  button[type=submit]{
+    font-family:'Poppins',sans-serif;
+    font-size:17px;font-weight:600;color:#fff;
+    background:var(--terracotta);
+    border:none;border-radius:12px;
+    padding:16px 34px;width:100%;max-width:380px;
+    cursor:pointer;
+    box-shadow:0 3px 10px rgba(188,100,73,.3);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  button[type=submit]:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(188,100,73,.35);}
+  button[type=submit]:disabled{background:#C9A99C;cursor:not-allowed;box-shadow:none;}
+  .envoi .note{font-size:13px;color:#8B8F8B;margin-top:10px;}
+
+  .erreur-envoi{
+    display:none;margin-top:14px;
+    background:#FBEDE9;border:1.5px solid var(--terracotta);
+    border-radius:10px;padding:12px 14px;
+    color:#8f4530;font-size:14.5px;text-align:left;
+  }
+
+  /* ===== Écran de confirmation ===== */
+  .confirmation{
+    display:none;text-align:center;padding:70px 20px;
+  }
+  .confirmation .coche{
+    width:76px;height:76px;border-radius:50%;
+    background:var(--sauge);color:#fff;
+    font-size:38px;line-height:76px;
+    margin:0 auto 20px;
+  }
+  .confirmation h2{font-size:23px;margin-bottom:10px;}
+  .confirmation p{max-width:420px;margin:0 auto;color:#5a5f5a;}
+
+  footer{
+    margin-top:44px;padding:18px;text-align:center;
+    font-size:13px;color:#8B8F8B;border-top:1px solid var(--ligne);
+  }
+  footer strong{color:var(--encre);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">IFSI — Centre Hospitalier de Roubaix</div>
+  <h1>Fiche miroir étudiant</h1>
+  <p>Première rencontre de guidance pédagogique · Promotion 2026-2029.
+  Cette fiche m'aide à vous connaître pour vous accompagner au mieux pendant vos trois années de formation. Répondez simplement, avec sincérité : il n'y a aucune bonne ou mauvaise réponse.</p>
+</header>
+
+<div class="progression" aria-hidden="true">
+  <div class="piste"><div class="remplissage" id="barre"></div></div>
+  <div class="texte" id="barre-texte">0 % complété</div>
+</div>
+
+<div class="conteneur">
+
+<form id="fiche" novalidate>
+
+  <!-- ============ CONSENTEMENT (déverrouille le formulaire) ============ -->
+  <div class="consentement">
+    <h2>🔒 Confidentialité de vos réponses</h2>
+    <p>Les informations recueillies sont destinées <strong>uniquement à votre formatrice référente</strong> dans le cadre du suivi pédagogique individuel.</p>
+    <ul>
+      <li>Elles ne sont partagées avec personne d'autre sans votre accord.</li>
+      <li>Elles sont conservées pendant la durée de votre formation, puis supprimées.</li>
+      <li>Vous pouvez à tout moment demander à les consulter, les corriger ou les supprimer auprès de votre formatrice.</li>
+    </ul>
+    <label class="case">
+      <input type="checkbox" id="case-consentement" name="Consentement" value="Oui, consentement donné" required>
+      <span>J'ai compris et j'accepte que ces informations soient utilisées pour mon suivi pédagogique. *</span>
+    </label>
+    <div class="etat-verrou ferme" id="etat-verrou">
+      🔒 Le formulaire est verrouillé. Cochez la case ci-dessus pour le déverrouiller et commencer à le remplir.
+    </div>
+  </div>
+
+  <!-- ============ CORPS DU FORMULAIRE (verrouillé tant que pas de consentement) ============ -->
+  <div id="corps-formulaire" class="verrouille">
+
+  <!-- ============ PARTIE 1 ============ -->
+  <fieldset data-onglet="sauge" disabled>
+    <legend>1 · Identité et parcours</legend>
+
+    <div class="deux-col">
+      <div class="champ">
+        <label class="etiquette" for="nom">Nom *</label>
+        <input type="text" id="nom" name="Nom" autocomplete="family-name" required>
+      </div>
+      <div class="champ">
+        <label class="etiquette" for="prenom">Prénom *</label>
+        <input type="text" id="prenom" name="Prénom" autocomplete="given-name" required>
+      </div>
+    </div>
+
+    <div class="deux-col">
+      <div class="champ">
+        <label class="etiquette" for="age">Âge</label>
+        <input type="number" id="age" name="Âge" min="16" max="70" inputmode="numeric">
+      </div>
+      <div class="champ">
+        <label class="etiquette" for="tel">Téléphone</label>
+        <input type="tel" id="tel" name="Téléphone" autocomplete="tel" inputmode="tel">
+      </div>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="email">Adresse e-mail</label>
+      <input type="email" id="email" name="Email" autocomplete="email" inputmode="email">
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Votre baccalauréat (ou équivalent)</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Type de bac" value="Bac général"><span>Bac général</span></label>
+        <label><input type="radio" name="Type de bac" value="Bac ST2S"><span>ST2S</span></label>
+        <label><input type="radio" name="Type de bac" value="Bac STL"><span>STL</span></label>
+        <label><input type="radio" name="Type de bac" value="Autre bac technologique"><span>Autre bac techno</span></label>
+        <label><input type="radio" name="Type de bac" value="Bac pro ASSP"><span>Bac pro ASSP</span></label>
+        <label><input type="radio" name="Type de bac" value="Autre bac professionnel"><span>Autre bac pro</span></label>
+        <label><input type="radio" name="Type de bac" value="DAEU"><span>DAEU</span></label>
+        <label><input type="radio" name="Type de bac" value="Autre"><span>Autre</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="bac-annee">Année d'obtention et précision si « autre » <span class="facultatif">(facultatif)</span></label>
+      <input type="text" id="bac-annee" name="Précision bac" placeholder="Ex : 2025 · Bac STMG">
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Votre parcours avant l'IFSI</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Parcours avant IFSI" value="Sortie de bac directe"><span>Sortie de bac directe</span></label>
+        <label><input type="radio" name="Parcours avant IFSI" value="Expérience pro dans la santé"><span>Expérience pro · santé</span></label>
+        <label><input type="radio" name="Parcours avant IFSI" value="Reconversion (hors santé)"><span>Reconversion (hors santé)</span></label>
+        <label><input type="radio" name="Parcours avant IFSI" value="Promotion professionnelle"><span>Promotion professionnelle</span></label>
+        <label><input type="radio" name="Parcours avant IFSI" value="Demandeur d'emploi (financement région)"><span>Demandeur d'emploi · financement région</span></label>
+        <label><input type="radio" name="Parcours avant IFSI" value="Autre"><span>Autre</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="parcours-autre">Si « autre » ou pour préciser votre situation <span class="facultatif">(facultatif)</span></label>
+      <input type="text" id="parcours-autre" name="Précision parcours" placeholder="Ex : congé parental, service civique, CPF de transition…">
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Êtes-vous issu(e) de la filière aide-soignante ?</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Filière aide-soignante" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Filière aide-soignante" value="Non"><span>Non</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="exp">Si vous avez une expérience professionnelle, racontez en deux mots <span class="facultatif">(facultatif)</span></label>
+      <textarea id="exp" name="Expérience professionnelle" placeholder="Métier, durée, secteur…"></textarea>
+    </div>
+  </fieldset>
+
+  <!-- ============ PARTIE 2 ============ -->
+  <fieldset data-onglet="bleu" disabled>
+    <legend>2 · Situation pratique</legend>
+
+    <div class="champ">
+      <label class="etiquette" for="commune">Commune de domicile</label>
+      <p class="aide">Utile pour vous proposer des lieux de stage accessibles.</p>
+      <input type="text" id="commune" name="Commune de domicile" autocomplete="address-level2">
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Permis B</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Permis B" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Permis B" value="Non"><span>Non</span></label>
+        <label><input type="radio" name="Permis B" value="En cours"><span>En cours</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Voiture à disposition</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Voiture" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Voiture" value="Non"><span>Non</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Ordinateur personnel</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Ordinateur personnel" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Ordinateur personnel" value="Non"><span>Non</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Connexion internet fiable à domicile</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Connexion internet fiable" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Connexion internet fiable" value="Non"><span>Non</span></label>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- ============ PARTIE 3 ============ -->
+  <fieldset data-onglet="terracotta" disabled>
+    <legend>3 · Compétences et aisances</legend>
+
+    <div class="champ">
+      <span class="etiquette">En calcul, vous vous sentez…</span>
+      <p class="aide">Soyez honnête : cela me permet de vous accompagner dès le début, notamment pour les calculs de doses.</p>
+      <div class="pastilles">
+        <label><input type="radio" name="Niveau en calcul" value="Très à l'aise"><span>Très à l'aise</span></label>
+        <label><input type="radio" name="Niveau en calcul" value="À l'aise"><span>À l'aise</span></label>
+        <label><input type="radio" name="Niveau en calcul" value="Quelques difficultés"><span>Quelques difficultés</span></label>
+        <label><input type="radio" name="Niveau en calcul" value="Grandes difficultés"><span>Grandes difficultés</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">À l'aise avec l'informatique ?</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Aisance informatique" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Aisance informatique" value="Non"><span>Non</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">À l'aise en rédaction (écrits longs, argumentation) ?</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Aisance rédactionnelle" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Aisance rédactionnelle" value="Non"><span>Non</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Le français est-il votre langue première ?</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Français langue première" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Français langue première" value="Non"><span>Non</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Vous sentez-vous à l'aise en français, à l'écrit comme à l'oral ?</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Aisance en français" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Aisance en français" value="Partiellement"><span>Partiellement</span></label>
+        <label><input type="radio" name="Aisance en français" value="Non"><span>Non</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Votre niveau d'anglais</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Niveau anglais" value="Médiocre"><span>Médiocre</span></label>
+        <label><input type="radio" name="Niveau anglais" value="Moyen"><span>Moyen</span></label>
+        <label><input type="radio" name="Niveau anglais" value="Bon"><span>Bon</span></label>
+        <label><input type="radio" name="Niveau anglais" value="Très bon"><span>Très bon</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="langue2">Une deuxième langue ? Laquelle et quel niveau ? <span class="facultatif">(facultatif)</span></label>
+      <input type="text" id="langue2" name="Deuxième langue" placeholder="Ex : espagnol, niveau moyen">
+    </div>
+  </fieldset>
+
+  <!-- ============ PARTIE 4 ============ -->
+  <fieldset data-onglet="sable" disabled>
+    <legend>4 · Besoins spécifiques</legend>
+    <span class="confidentiel">🔒 Partie strictement confidentielle</span>
+
+    <div class="champ">
+      <span class="etiquette">Bénéficiez-vous d'un tiers temps reconnu ?</span>
+      <p class="aide">Ex : dyslexie, dyscalculie, trouble de l'attention… La reconnaissance nécessite un certificat médical ou une notification officielle : nous en parlerons ensemble si besoin.</p>
+      <div class="pastilles">
+        <label><input type="radio" name="Tiers temps" value="Oui, reconnu"><span>Oui, reconnu</span></label>
+        <label><input type="radio" name="Tiers temps" value="Démarche en cours"><span>Démarche en cours</span></label>
+        <label><input type="radio" name="Tiers temps" value="Non"><span>Non</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="tt-nature">Si oui ou en cours, de quelle nature ? <span class="facultatif">(facultatif)</span></label>
+      <input type="text" id="tt-nature" name="Nature du tiers temps" placeholder="Ex : dyslexie reconnue depuis 2020">
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="handicap">Une situation de handicap ou de santé que vous souhaitez me signaler ? <span class="facultatif">(facultatif)</span></label>
+      <textarea id="handicap" name="Situation de handicap ou de santé" placeholder="Seulement ce que vous souhaitez partager, à votre rythme."></textarea>
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Souhaitez-vous un entretien individuel confidentiel à ce sujet ?</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Entretien individuel souhaité" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Entretien individuel souhaité" value="Non"><span>Non</span></label>
+        <label><input type="radio" name="Entretien individuel souhaité" value="Je ne sais pas encore"><span>Je ne sais pas encore</span></label>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- ============ PARTIE 5 ============ -->
+  <fieldset data-onglet="sauge" disabled>
+    <legend>5 · Vous et la formation</legend>
+
+    <div class="champ">
+      <label class="etiquette" for="forts">Vos 3 points forts, selon vous</label>
+      <p class="aide">Qualités humaines, scolaires, professionnelles… tout compte.</p>
+      <textarea id="forts" name="Points forts" placeholder="1. …&#10;2. …&#10;3. …"></textarea>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="attentes">Vos attentes et besoins pour cette formation</label>
+      <textarea id="attentes" name="Attentes et besoins" placeholder="Ce que vous attendez de la formation, de l'équipe, de moi…"></textarea>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="craintes">Vos craintes éventuelles</label>
+      <textarea id="craintes" name="Craintes" placeholder="Stages, charge de travail, écrits, oraux…"></textarea>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="projet">Votre projet professionnel, même vague</label>
+      <textarea id="projet" name="Projet professionnel" placeholder="Urgences, pédiatrie, bloc, psychiatrie, libéral… ou « je ne sais pas encore », c'est permis !"></textarea>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="libre">Autre chose que vous voulez me faire savoir sur vous ? <span class="facultatif">(facultatif)</span></label>
+      <textarea id="libre" name="Points libres"></textarea>
+    </div>
+  </fieldset>
+
+  <!-- ============ PARTIE 6 ============ -->
+  <fieldset data-onglet="bleu" disabled>
+    <legend>6 · Vie étudiante</legend>
+
+    <div class="champ">
+      <span class="etiquette">Avez-vous (ou prévoyez-vous) un job étudiant ?</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Job étudiant" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Job étudiant" value="Non"><span>Non</span></label>
+        <label><input type="radio" name="Job étudiant" value="Peut-être"><span>Peut-être</span></label>
+      </div>
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="job-h">Si oui, combien d'heures par semaine environ ? <span class="facultatif">(facultatif)</span></label>
+      <input type="number" id="job-h" name="Heures de job par semaine" min="0" max="60" inputmode="numeric">
+    </div>
+
+    <div class="champ">
+      <label class="etiquette" for="hobbies">Un hobby, une passion, une activité en dehors des cours ?</label>
+      <p class="aide">Sport, musique, engagement associatif, création… Cela m'aide à vous connaître au-delà de l'étudiant(e).</p>
+      <textarea id="hobbies" name="Hobbies et activités" placeholder="Ex : handball en club, piano depuis 10 ans, bénévolat à la Croix-Rouge…"></textarea>
+    </div>
+
+    <div class="champ">
+      <span class="etiquette">Êtes-vous boursier(ère) ?</span>
+      <div class="pastilles">
+        <label><input type="radio" name="Boursier" value="Oui"><span>Oui</span></label>
+        <label><input type="radio" name="Boursier" value="Non"><span>Non</span></label>
+        <label><input type="radio" name="Boursier" value="Demande en cours"><span>Demande en cours</span></label>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- ============ ENVOI ============ -->
+  <div class="envoi">
+    <button type="submit" id="bouton-envoi" disabled>Envoyer ma fiche</button>
+    <p class="note">Vos réponses partent directement et uniquement vers votre formatrice.</p>
+    <div class="erreur-envoi" id="erreur-envoi"></div>
+  </div>
+
+  </div><!-- /corps-formulaire -->
+
+</form>
+
+<!-- ============ CONFIRMATION ============ -->
+<div class="confirmation" id="confirmation">
+  <div class="coche">✓</div>
+  <h2>Fiche bien envoyée, merci !</h2>
+  <p>Vos réponses ont été transmises à votre formatrice. Elles serviront de point de départ à votre première rencontre de guidance. À très bientôt !</p>
+</div>
+
+<footer>
+  Guidance pédagogique · Promotion 2026-2029<br>
+  <strong>Formatrice Marilyne GRASSELLINI</strong> — IFSI du Centre Hospitalier de Roubaix
+</footer>
+
+</div>
+
+<script>
+/* =========================================================
+   CONFIGURATION FORMSPREE
+   Remplace VOTRE_ID par l'identifiant de ton formulaire,
+   fourni par formspree.io (ex : https://formspree.io/f/xzbqwxyz)
+   ========================================================= */
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/VOTRE_ID";
+
+const formulaire = document.getElementById('fiche');
+const bouton = document.getElementById('bouton-envoi');
+const zoneErreur = document.getElementById('erreur-envoi');
+
+/* ---- Verrouillage par consentement ---- */
+const caseConsentement = document.getElementById('case-consentement');
+const corps = document.getElementById('corps-formulaire');
+const etatVerrou = document.getElementById('etat-verrou');
+
+function majVerrou(){
+  const accepte = caseConsentement.checked;
+  corps.classList.toggle('verrouille', !accepte);
+  corps.querySelectorAll('fieldset').forEach(f => f.disabled = !accepte);
+  bouton.disabled = !accepte;
+  if (accepte){
+    etatVerrou.className = 'etat-verrou ouvert';
+    etatVerrou.textContent = '🔓 Merci ! Le formulaire est déverrouillé, vous pouvez le remplir.';
+  } else {
+    etatVerrou.className = 'etat-verrou ferme';
+    etatVerrou.textContent = '🔒 Le formulaire est verrouillé. Cochez la case ci-dessus pour le déverrouiller et commencer à le remplir.';
+  }
+}
+caseConsentement.addEventListener('change', majVerrou);
+
+/* ---- Barre de progression ---- */
+const barre = document.getElementById('barre');
+const barreTexte = document.getElementById('barre-texte');
+
+function majProgression(){
+  const groupesRadio = new Set();
+  formulaire.querySelectorAll('input[type=radio]').forEach(r => groupesRadio.add(r.name));
+  const champsTexte = formulaire.querySelectorAll('input[type=text],input[type=number],input[type=email],input[type=tel],textarea');
+  const total = groupesRadio.size + champsTexte.length + 1; // +1 consentement
+
+  let remplis = 0;
+  groupesRadio.forEach(nom => {
+    if (formulaire.querySelector('input[name="'+CSS.escape(nom)+'"]:checked')) remplis++;
+  });
+  champsTexte.forEach(c => { if (c.value.trim() !== '') remplis++; });
+  if (caseConsentement.checked) remplis++;
+
+  const pct = Math.round((remplis / total) * 100);
+  barre.style.width = pct + '%';
+  barreTexte.textContent = pct + ' % complété';
+}
+formulaire.addEventListener('input', majProgression);
+formulaire.addEventListener('change', majProgression);
+
+/* ---- Envoi ---- */
+formulaire.addEventListener('submit', async function(e){
+  e.preventDefault();
+  zoneErreur.style.display = 'none';
+
+  const nom = document.getElementById('nom');
+  const prenom = document.getElementById('prenom');
+
+  if (!caseConsentement.checked){
+    afficherErreur("Le formulaire ne peut pas être envoyé sans votre consentement. Merci de cocher la case en haut de la page.");
+    caseConsentement.closest('.consentement').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  if (nom.value.trim() === '' || prenom.value.trim() === ''){
+    afficherErreur("Merci d'indiquer votre nom et votre prénom (partie 1).");
+    nom.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  if (FORMSPREE_ENDPOINT.includes('VOTRE_ID')){
+    afficherErreur("Le formulaire n'est pas encore relié à Formspree : l'identifiant du formulaire doit être configuré par la formatrice.");
+    return;
+  }
+
+  bouton.disabled = true;
+  bouton.textContent = 'Envoi en cours…';
+
+  const donnees = new FormData(formulaire);
+  donnees.append('_subject', 'Fiche miroir – ' + prenom.value.trim() + ' ' + nom.value.trim());
+
+  try {
+    const reponse = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      body: donnees,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (reponse.ok){
+      formulaire.style.display = 'none';
+      document.querySelector('.progression').style.display = 'none';
+      document.getElementById('confirmation').style.display = 'block';
+      window.scrollTo({top:0, behavior:'smooth'});
+    } else {
+      const detail = await reponse.json().catch(() => null);
+      afficherErreur("L'envoi n'a pas abouti. Vérifiez votre connexion et réessayez. Si le problème persiste, prévenez votre formatrice." + (detail && detail.errors ? ' (' + detail.errors.map(e=>e.message).join(', ') + ')' : ''));
+      bouton.disabled = false;
+      bouton.textContent = 'Envoyer ma fiche';
+    }
+  } catch(err) {
+    afficherErreur("Pas de connexion internet ou serveur indisponible. Réessayez dans un instant, vos réponses sont toujours dans la page.");
+    bouton.disabled = false;
+    bouton.textContent = 'Envoyer ma fiche';
+  }
+});
+
+function afficherErreur(message){
+  zoneErreur.textContent = message;
+  zoneErreur.style.display = 'block';
+}
+
+majVerrou();
+majProgression();
+</script>
+
+</body>
+</html>
